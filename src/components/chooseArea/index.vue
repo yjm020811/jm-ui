@@ -23,37 +23,15 @@ const city = ref('')
 const area = ref('')
 
 const areas = ref(allAreas)
-console.log(areas.value);
 
-//下拉框中的城市
-// const selectCity = computed(() => {
-//     //当省份没有选择，返回空数组
-//     if (!province.value) return []
-//     //当选择了省份
-//     if (province.value) {
-//         return areas.value.find(item => item.code === province.value).children
-//     }
-// })
 const selectCity = ref([])
-
-
-
-//下拉框中的区域
-// const selectArea = computed(() => {
-//     console.log(selectCity.value);
-//     //当省份没有选择，返回空数组
-//     if (!city.value) return []
-//     //当选择了城市
-//     else {
-//         return selectCity.value.find(item => item.code === city.value).children
-//     }
-// })
 
 const selectArea = ref([])
 
-//监听省份的值的变化
+//监听省份的变化
 watch(() => province.value, val => {
     if (val) {
+        //如果item.code与val相等，则将item.children赋值给selectCity
         const cities = areas.value.find(item => item.code === val).children
         selectCity.value = cities
         console.log(selectCity.value);
@@ -62,16 +40,13 @@ watch(() => province.value, val => {
         area.value = ''
 })
 
-//监听选择的城市的变化
+//监听城市的变化
 watch(() => city.value, val => {
     if (val) {
         console.log(val);
         const areas = selectCity.value.find(item => item.code === val).children
         console.log(areas);
-        areas.forEach(element => {
-            //将所有的数据push到selectArea
-            selectArea.value.push(element)
-        });
+        selectArea.value = areas
     }
     area.value = ''
 })
