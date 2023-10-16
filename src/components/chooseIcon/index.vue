@@ -49,7 +49,6 @@ watch(() => props.visible, (val) => {
 
 //el-dialog的显示与隐藏是由dialogVisible控制的，所以需要监听dialogVisible的值，将dialogVisible的值传递给el-dialog
 watch(dialogVisible, (val) => {
-    console.log('dialogVisible的值变了', val);
     emits('update:visible', val)
 })
 

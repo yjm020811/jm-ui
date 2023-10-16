@@ -10,6 +10,10 @@
         </el-menu-item>
         <el-menu-item index="/chooseArea">
             <el-icon-menu></el-icon-menu>
+            <span>省市区三级联动</span>
+        </el-menu-item>
+        <el-menu-item index="/trend">
+            <el-icon-menu></el-icon-menu>
             <span>趋势标记</span>
         </el-menu-item>
     </el-menu>
