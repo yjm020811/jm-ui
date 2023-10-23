@@ -56,7 +56,7 @@ const props = defineProps({
   actions: {
     type: Array,
     default: () => []
-  }
+  },
 });
 
 const emits = defineEmits(["clickItem","clickAction"]);

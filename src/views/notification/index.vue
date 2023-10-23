@@ -17,7 +17,7 @@
     <br/>
     <br/> -->
     <h2>完整的封装</h2>
-    <notification :value="50" >
+    <notification :value="list[0].content.length" >
     <template #default>
      <ToDoList  @clickItem="clickItem"  @clickAction="clickAction" :list="list" :actions="actions"></ToDoList>
     </template>
@@ -38,6 +38,8 @@ const clickItem = (val)=>{
 const clickAction = (val)=>{
   console.log(val);
 }
+
+console.log(list[0].content.length);
 
 </script>
 <style  scoped>
