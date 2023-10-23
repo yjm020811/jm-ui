@@ -1,18 +1,25 @@
 <template>
   <div>
-    <!-- <notification :value="50" ></notification>
+    <!-- <h2>通知菜单传入value</h2>
+    <notification :value="50" ></notification>
     <br/>
     <br/>
+    <h2>通知菜单传入value和max</h2>
     <notification :value="50" :max="30"></notification>
     <br/>
     <br/>
+    <h2>通知菜单传入value和max和isDot</h2>
     <notification :value="50" :max="30" isDot></notification>
     <br/>
     <br/>
-    <notification icon="ChatRound" :value="50" :max="30" isDot></notification> -->
+    <h2>自定义icon</h2>
+    <notification icon="ChatRound" :value="50" :max="30" isDot></notification>
+    <br/>
+    <br/> -->
+    <h2>完整的封装</h2>
     <notification :value="50" >
     <template #default>
-     <ToDoList :list="list" :actions="actions"></ToDoList>
+     <ToDoList  @clickItem="clickItem"  @clickAction="clickAction" :list="list" :actions="actions"></ToDoList>
     </template>
     </notification>
   </div>
@@ -23,6 +30,15 @@ import { ref} from 'vue'
 import notification from '../../components/notification/index.vue'
 import ToDoList from '../../components/ToDoList/index.vue'
 import {list,actions} from './data'
+
+const clickItem = (val)=>{
+  console.log(val);
+}
+
+const clickAction = (val)=>{
+  console.log(val);
+}
+
 </script>
 <style  scoped>
 </style>

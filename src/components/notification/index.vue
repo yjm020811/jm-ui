@@ -1,7 +1,7 @@
 <template>
   <el-popover
     placement="bottom"
-    :width="300"
+    :width="340"
     trigger="click"
   >
   <template #default>

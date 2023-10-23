@@ -12,4 +12,9 @@
 <style >
 @import url('./styles/base.css');
 @import url('./styles/ui.css');
+
+.el-popper {
+  padding: 0 !important;
+}
+
 </style>

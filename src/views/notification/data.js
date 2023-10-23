@@ -17,7 +17,6 @@ export const list = [
           time: '2019-05-08 14:33:18',
           avatar: 'https://gw.alipayobjects.com/zos/rmsportal/kISTdvpyTAhtGxpovNWd.png'
         }
-  
       ],
     },
     {
