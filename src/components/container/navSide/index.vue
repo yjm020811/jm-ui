@@ -20,6 +20,14 @@
             <el-icon-menu></el-icon-menu>
             <span>通知菜单</span>
         </el-menu-item>
+        <el-menu-item index="/menus">
+            <el-icon-menu></el-icon-menu>
+            <span>menu组件</span>
+        </el-menu-item>
+        <el-menu-item index="/progress">
+            <el-icon-menu></el-icon-menu>
+            <span>进度条</span>
+        </el-menu-item>
     </el-menu>
 </template>
 
@@ -39,4 +47,9 @@ const props = defineProps({
 .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
 }
+
+svg {
+    width: 2em;
+    height: 2em;
+  }
 </style>

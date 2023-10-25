@@ -7,4 +7,9 @@
 <script setup>
 import { ref } from 'vue'
 </script>
-<style lang="less" scoped></style>
+<style  scoped>
+svg {
+    width: 2em;
+    height: 2em;
+  }
+</style>

@@ -95,6 +95,11 @@ const textColor = computed(() => {
     margin-right: 4px;
 }
 
+svg {
+    width: 2em;
+    height: 2em;
+  }
+
 .icon {
     svg {
         width: 0.8em;
