@@ -28,6 +28,10 @@
             <el-icon-menu></el-icon-menu>
             <span>进度条</span>
         </el-menu-item>
+        <el-menu-item index="/table">
+            <el-icon-menu></el-icon-menu>
+            <span>表格组件</span>
+        </el-menu-item>
     </el-menu>
 </template>
 

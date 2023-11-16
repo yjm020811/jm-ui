@@ -36,4 +36,9 @@ const toggle = () => {
     align-items: center;
     cursor: pointer;
 }
+
+svg {
+    width: 2em;
+    height: 2em;
+  }
 </style>

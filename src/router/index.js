@@ -35,6 +35,10 @@ const routes = [
         path: "/progress",
         component: () => import("../views/progress/index.vue"),
       },
+      {
+        path: "/table",
+        component: () => import("../views/table/index.vue"),
+      },
     ],
   },
 ];
