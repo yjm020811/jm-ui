@@ -5,7 +5,6 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
 import menus from "../../components/menus/index.vue";
 
 const data = [
