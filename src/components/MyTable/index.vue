@@ -22,7 +22,6 @@ const props = defineProps({
 });
 console.log(props);
 
-// console.log();
 
 //过滤操作选项后的一个配置
 const tableOptions = computed(() =>
@@ -53,40 +52,22 @@ const handleEdit = (scope) => {
 </script>
 
 <template>
-  <el-table
-    :data="tableData"
-    style="width: 100%"
-    v-loading="isLoading"
-    :element-loading-text="elementLoadingText"
-    :element-loading-spinner="elementLoadingIcon"
-  >
+  <el-table :data="tableData" style="width: 100%" v-loading="isLoading" :element-loading-text="elementLoadingText"
+    :element-loading-spinner="elementLoadingIcon">
     <template v-for="(item, index) in tableOptions" :key="index">
       <!-- 正常展示数据的区域 -->
-      <el-table-column
-        :label="item.label"
-        :prop="item.prop"
-        :align="item.align"
-        :width="item.width"
-      >
+      <el-table-column :label="item.label" :prop="item.prop" :align="item.align" :width="item.width">
         <template #default="scope">
           <slot v-if="item.slot" :name="item.slot" :scope="scope"></slot>
           <span v-else>{{ scope.row[item.prop] }}</span>
-          <el-icon-edit
-            class="edit"
-            @click="handleEdit(scope)"
-            v-if="item.edit"
-          ></el-icon-edit>
+          <el-icon-edit class="edit" @click="handleEdit(scope)" v-if="item.edit"></el-icon-edit>
         </template>
       </el-table-column>
     </template>
 
     <!-- 编辑区域 -->
-    <el-table-column
-      :label="actionOptions.label"
-      :prop="actionOptions.prop"
-      :align="actionOptions.align"
-      :width="actionOptions.width"
-    >
+    <el-table-column :label="actionOptions.label" :prop="actionOptions.prop" :align="actionOptions.align"
+      :width="actionOptions.width">
       <template #default="scope">
         <!-- action插槽 -->
         <slot name="action" :scope="scope"></slot>

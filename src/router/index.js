@@ -9,43 +9,47 @@ const routes = [
     children: [
       {
         path: "/",
-        component: Home,
+        component: Home
       },
       {
         path: "/chooseIcon",
-        component: () => import("../views/chooseIcon/index.vue"),
+        component: () => import("../views/chooseIcon/index.vue")
       },
       {
         path: "/chooseArea",
-        component: () => import("../views/chooseArea/index.vue"),
+        component: () => import("../views/chooseArea/index.vue")
       },
       {
         path: "/trend",
-        component: () => import("../views/trend/index.vue"),
+        component: () => import("../views/trend/index.vue")
       },
       {
         path: "/notification",
-        component: () => import("../views/notification/index.vue"),
+        component: () => import("../views/notification/index.vue")
       },
       {
         path: "/menus",
-        component: () => import("../views/menus/index.vue"),
+        component: () => import("../views/menus/index.vue")
       },
       {
         path: "/progress",
-        component: () => import("../views/progress/index.vue"),
+        component: () => import("../views/progress/index.vue")
       },
       {
         path: "/table",
-        component: () => import("../views/table/index.vue"),
+        component: () => import("../views/table/index.vue")
       },
-    ],
-  },
+      {
+        path: "/dialog",
+        component: () => import("../views/dialog/index.vue")
+      }
+    ]
+  }
 ];
 
 const router = createRouter({
   routes,
-  history: createWebHistory(),
+  history: createWebHistory()
 });
 
 export default router;

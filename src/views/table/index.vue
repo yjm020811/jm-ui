@@ -62,7 +62,7 @@ const svg = `
         " style="stroke-width: 4px; fill: rgba(0, 0, 0, 0)"/>
       `;
 
-//分页的配置
+//分页的配置(到毕设上面去看详细的table分页)
 onMounted(() => {
   const current = ref(1);
   const pageSize = ref(5);
@@ -70,29 +70,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <MyTable
-    :tableData="tableData"
-    :options="options"
-    elementLoadingText="加载中，请等待！"
-    :elementLoadingIcon="svg"
-  >
+  <MyTable :tableData="tableData" :options="options" elementLoadingText="加载中，请等待！" :elementLoadingIcon="svg">
     <template #url="{ scope }">
-      <a
-        :href="scope.row.url"
-        style="text-decoration: none; color: skyblue"
-        target="_blank"
-        >url:{{ scope.row.title }}</a
-      >
+      <a :href="scope.row.url" style="text-decoration: none; color: skyblue" target="_blank">url:{{ scope.row.title }}</a>
     </template>
 
     <!-- 自定义编辑区域 -->
     <template #action="{ scope }">
-      <el-button size="small" type="primary" @click="edit(scope)"
-        >编辑</el-button
-      >
-      <el-button size="small" type="danger" @click="deleteAction(scope)"
-        >删除</el-button
-      >
+      <el-button size="small" type="primary" @click="edit(scope)">编辑</el-button>
+      <el-button size="small" type="danger" @click="deleteAction(scope)">删除</el-button>
     </template>
   </MyTable>
 </template>

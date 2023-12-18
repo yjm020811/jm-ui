@@ -32,6 +32,10 @@
             <el-icon-menu></el-icon-menu>
             <span>表格组件</span>
         </el-menu-item>
+        <el-menu-item index="/dialog">
+            <el-icon-menu></el-icon-menu>
+            <span>dialog组件</span>
+        </el-menu-item>
     </el-menu>
 </template>
 
@@ -53,5 +57,5 @@ const props = defineProps({
 svg {
     width: 2em;
     height: 2em;
-  }
+}
 </style>
