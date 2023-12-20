@@ -17,30 +17,31 @@
     <br/>
     <br/> -->
     <h2>完整的封装</h2>
-    <notification :value="list[0].content.length" >
-    <template #default>
-     <ToDoList  @clickItem="clickItem"  @clickAction="clickAction" :list="list" :actions="actions"></ToDoList>
-    </template>
+    <notification :value="list[0].content.length">
+      <template #default>
+        <toDoList
+          @clickItem="clickItem"
+          @clickAction="clickAction"
+          :list="list"
+          :actions="actions"
+        ></toDoList>
+      </template>
     </notification>
   </div>
 </template>
 
 <script setup>
-import { ref} from 'vue'
-import notification from '../../components/notification/index.vue'
-import ToDoList from '../../components/ToDoList/index.vue'
-import {list,actions} from './data'
+import { ref } from "vue";
+import { list, actions } from "./data";
 
-const clickItem = (val)=>{
+const clickItem = (val) => {
   console.log(val);
-}
+};
 
-const clickAction = (val)=>{
+const clickAction = (val) => {
   console.log(val);
-}
+};
 
 console.log(list[0].content.length);
-
 </script>
-<style  scoped>
-</style>
+<style scoped></style>

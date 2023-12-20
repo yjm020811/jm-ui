@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import MyTable from "../../components/MyTable/index.vue";
 import axios from "axios";
 
 //el-table的data数据
@@ -70,15 +69,29 @@ onMounted(() => {
 </script>
 
 <template>
-  <MyTable :tableData="tableData" :options="options" elementLoadingText="加载中，请等待！" :elementLoadingIcon="svg">
+  <MyTable
+    :tableData="tableData"
+    :options="options"
+    elementLoadingText="加载中，请等待！"
+    :elementLoadingIcon="svg"
+  >
     <template #url="{ scope }">
-      <a :href="scope.row.url" style="text-decoration: none; color: skyblue" target="_blank">url:{{ scope.row.title }}</a>
+      <a
+        :href="scope.row.url"
+        style="text-decoration: none; color: skyblue"
+        target="_blank"
+        >url:{{ scope.row.title }}</a
+      >
     </template>
 
     <!-- 自定义编辑区域 -->
     <template #action="{ scope }">
-      <el-button size="small" type="primary" @click="edit(scope)">编辑</el-button>
-      <el-button size="small" type="danger" @click="deleteAction(scope)">删除</el-button>
+      <el-button size="small" type="primary" @click="edit(scope)"
+        >编辑</el-button
+      >
+      <el-button size="small" type="danger" @click="deleteAction(scope)"
+        >删除</el-button
+      >
     </template>
   </MyTable>
 </template>

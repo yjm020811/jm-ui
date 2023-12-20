@@ -1,12 +1,16 @@
 <template>
-  <MyDialog btnName="点击打开dialog" dialogTitle="我是dialog的标题" @updateCancel="cancel" @updateConfirm="confirm"
-    @closeConfirm="closeConfirm" @cancelConfirm="cancelConfirm">
+  <MyDialog
+    btnName="点击打开dialog"
+    dialogTitle="我是dialog的标题"
+    @updateCancel="cancel"
+    @updateConfirm="confirm"
+    @closeConfirm="closeConfirm"
+    @cancelConfirm="cancelConfirm"
+  >
     <template #content> 这是内容 </template>
   </MyDialog>
 </template>
 <script setup>
-import MyDialog from "../../components/MyDialog/index.vue";
-
 const cancel = () => {
   console.log("点击了自己封装的取消按钮");
 };

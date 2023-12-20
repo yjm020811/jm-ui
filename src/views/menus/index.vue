@@ -5,8 +5,6 @@
 </template>
 
 <script setup>
-import menus from "../../components/menus/index.vue";
-
 const data = [
   {
     name: "导航1",

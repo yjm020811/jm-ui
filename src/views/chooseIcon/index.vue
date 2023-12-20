@@ -11,7 +11,6 @@
 
 <script setup>
 import { ref } from "vue";
-import chooseIcon from "../../components/chooseIcon/index.vue";
 
 const visible = ref(false);
 

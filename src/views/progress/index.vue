@@ -1,30 +1,26 @@
 <template>
   <div>
-    <proGress
+    <myProgress
       :percentage="30"
       isAnimation
       :time="3000"
       :stroke-width="15"
-    ></proGress>
+    ></myProgress>
 
-    <proGress
+    <myProgress
       :percentage="30"
       isAnimation
       :time="3000"
       :stroke-width="15"
       type="circle"
-    ></proGress>
+    ></myProgress>
   </div>
 </template>
 
-<script setup>
-import { ref } from "vue";
-
-import proGress from "../../components/progress/index.vue";
-</script>
+<script setup></script>
 <style scoped>
-:deep(.el-progress-circle){
-  svg{
+:deep(.el-progress-circle) {
+  svg {
     width: 126px !important;
     height: 126px !important;
   }
