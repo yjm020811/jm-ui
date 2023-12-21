@@ -42,6 +42,10 @@ const routes = [
       {
         path: "/dialog",
         component: () => import("../views/dialog/index.vue")
+      },
+      {
+        path: "/upload",
+        component: () => import("../views/upload/index.vue")
       }
     ]
   }

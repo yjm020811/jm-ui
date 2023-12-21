@@ -9,6 +9,7 @@ import myProgress from "./myProgress/index.vue";
 import toDoList from "./toDoList/index.vue";
 import trend from "./trend/index.vue";
 import svgIcon from "./svgIcon/index.vue";
+import myUpload from "./myUpload/index.vue";
 
 // 全局组件对象
 const allGlobalComponents = {
@@ -21,12 +22,13 @@ const allGlobalComponents = {
   myProgress,
   toDoList,
   trend,
-  svgIcon
+  svgIcon,
+  myUpload
 };
 
 // 全局注册组件
 export default {
-  // 无比叫做install方法
+  // 务必叫做install方法
   install(app) {
     //注册项目
     Object.keys(allGlobalComponents).forEach((key) => {

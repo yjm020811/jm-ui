@@ -18,23 +18,13 @@ const props = defineProps({
   //加载图标名
   elementLoadingIcon: {
     type: String
+  },
+  //编辑区域的配置
+  actionOptions: {
+    type: Object
   }
 });
 console.log(props);
-
-
-//过滤操作选项后的一个配置
-const tableOptions = computed(() =>
-  //过滤出没有action的配置项
-  props.options.filter((item) => {
-    return !item.action;
-  })
-);
-console.log(tableOptions);
-
-//找出操作项的配置,如果找到item具有action项，就返回item
-const actionOptions = computed(() => props.options.find((item) => item.action));
-console.log(actionOptions);
 
 //表格是否在加载中
 const isLoading = computed(() => {
@@ -44,32 +34,39 @@ const isLoading = computed(() => {
     return false;
   }
 });
-
-//编辑按钮点击事件
-const handleEdit = (scope) => {
-  console.log(scope.row);
-};
 </script>
 
 <template>
-  <el-table :data="tableData" style="width: 100%" v-loading="isLoading" :element-loading-text="elementLoadingText"
-    :element-loading-spinner="elementLoadingIcon">
-    <template v-for="(item, index) in tableOptions" :key="index">
+  <el-table
+    :data="tableData"
+    style="width: 100%"
+    v-loading="isLoading"
+    :element-loading-text="elementLoadingText"
+    :element-loading-spinner="elementLoadingIcon"
+  >
+    <template v-for="(item, index) in options" :key="index">
       <!-- 正常展示数据的区域 -->
-      <el-table-column :label="item.label" :prop="item.prop" :align="item.align" :width="item.width">
+      <el-table-column
+        :label="item.label"
+        :prop="item.prop"
+        :align="item.align"
+        :width="item.width"
+      >
         <template #default="scope">
           <slot v-if="item.slot" :name="item.slot" :scope="scope"></slot>
           <span v-else>{{ scope.row[item.prop] }}</span>
-          <el-icon-edit class="edit" @click="handleEdit(scope)" v-if="item.edit"></el-icon-edit>
         </template>
       </el-table-column>
     </template>
 
     <!-- 编辑区域 -->
-    <el-table-column :label="actionOptions.label" :prop="actionOptions.prop" :align="actionOptions.align"
-      :width="actionOptions.width">
+    <el-table-column
+      v-if="actionOptions.show"
+      :label="actionOptions.label"
+      :align="actionOptions.align"
+      :width="actionOptions.width"
+    >
       <template #default="scope">
-        <!-- action插槽 -->
         <slot name="action" :scope="scope"></slot>
       </template>
     </el-table-column>

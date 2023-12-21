@@ -17,27 +17,28 @@ const options = [
     label: "标题",
     prop: "title",
     align: "center",
-    width: 300,
-    edit: true
+    width: 300
   },
   {
     label: "地址",
     prop: "url",
     align: "center",
+    // 是否开启插槽
     slot: "url"
   },
   {
     label: "热度",
     prop: "hot",
     align: "center"
-  },
-  // 在table的末尾的操作列设置插槽
-  {
-    label: "操作",
-    align: "center",
-    action: true
   }
 ];
+
+//是否在末尾需要插槽
+const actionOptions = {
+  show: true,
+  label: "操作",
+  align: "center"
+};
 
 // 编辑表格数据
 const edit = (scope) => {
@@ -74,6 +75,7 @@ onMounted(() => {
     :options="options"
     elementLoadingText="加载中，请等待！"
     :elementLoadingIcon="svg"
+    :actionOptions="actionOptions"
   >
     <template #url="{ scope }">
       <a
