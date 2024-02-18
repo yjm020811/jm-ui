@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="select">
         <el-select clearable placeholder="请选择省份" v-model="province">
             <el-option v-for="item in areas" :key="item.code" :value="item.code" :label="item.name"></el-option>
         </el-select>
@@ -17,6 +17,7 @@
 <script setup>
 import { ref, watch } from 'vue'
 import allAreas from './pca-code.json'
+console.log(allAreas);
 
 const province = ref('')
 const city = ref('')
@@ -31,6 +32,7 @@ const selectArea = ref([])
 //监听省份的变化
 watch(() => province.value, val => {
     if (val) {
+        console.log(val);
         //如果item.code与val相等，则将item.children赋值给selectCity
         const cities = areas.value.find(item => item.code === val).children
         selectCity.value = cities
@@ -55,6 +57,7 @@ watch(() => city.value, val => {
 const emits = defineEmits(['select'])
 
 watch(() => area.value, val => {
+    console.log('选择完毕', val);
     //当区域的值发生修改才会触发emits事件
     if (val) {
         const provinceData = {
@@ -86,5 +89,14 @@ watch(() => area.value, val => {
 <style  scoped>
 :deep(.el-input__wrapper) {
     margin-right: 10px;
+}
+
+.select {
+    display: flex;
+
+    .el-select {
+        margin-right: 20px;
+    }
+
 }
 </style>

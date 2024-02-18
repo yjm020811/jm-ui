@@ -36,12 +36,7 @@
           <trend text="今日挣取" upIcon="Sunset"></trend>
         </div>
         <div>
-          <trend
-            text="今日消费"
-            type="down"
-            downIcon="Food"
-            downIconColor="red"
-          ></trend>
+          <trend text="今日消费" type="down" downIcon="Food" downIconColor="red"></trend>
         </div>
       </div>
     </div>

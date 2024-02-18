@@ -32,7 +32,6 @@ export default {
   install(app) {
     //注册项目
     Object.keys(allGlobalComponents).forEach((key) => {
-      console.log(key);
       app.component(key, allGlobalComponents[key]);
     });
   }

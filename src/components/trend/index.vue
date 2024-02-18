@@ -4,11 +4,6 @@
             {{ text }}
         </div>
         <div class="icon">
-            <!-- <el-icon-arrow-up :style="{ color: reverseColor ? '#52c41a' : upIconColor }"
-                v-if="type === 'up'"></el-icon-arrow-up>
-            <el-icon-arrow-down :style="{ color: reverseColor ? '#f5222d' : downIconColor }
-                " v-else></el-icon-arrow-down> -->
-
             <component :is="`el-icon${toLine(upIcon)}`" :style="{ color: reverseColor ? '#52c41a' : upIconColor }"
                 v-if="type === 'up'"></component>
             <component :is="`el-icon${toLine(downIcon)}`" :style="{ color: reverseColor ? '#f5222d' : downIconColor }
@@ -98,7 +93,7 @@ const textColor = computed(() => {
 svg {
     width: 2em;
     height: 2em;
-  }
+}
 
 .icon {
     svg {

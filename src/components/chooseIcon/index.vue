@@ -7,16 +7,9 @@
   <div class="choose-icon-dialog-height">
     <el-dialog :title="title" v-model="dialogVisible" @close="dialogClose">
       <div class="container">
-        <div
-          class="item"
-          v-for="item in Object.keys(ElementPlusIconsVue)"
-          :key="item"
-          @click="clickItem(item)"
-        >
-          <div>
-            <!-- 使用动态组件循环图标组件 -->
-            <component :is="`el-icon${toLine(item)}`"></component>
-          </div>
+        <div class="item" v-for="item in Object.keys(ElementPlusIconsVue)" :key="item" @click="clickItem(item)">
+          <!-- 使用动态组件循环图标组件 -->
+          <component :is="`el-icon${toLine(item)}`"></component>
           <div class="text">{{ item }}</div>
         </div>
       </div>
@@ -38,7 +31,6 @@ const props = defineProps({
   //按钮的颜色类型
   color: String
 });
-console.log(props);
 
 const emits = defineEmits(["update:visible"]);
 //浅拷贝，子组件不能修改父组件的值（数据单向流）
