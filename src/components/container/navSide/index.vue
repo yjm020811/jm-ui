@@ -36,10 +36,6 @@
       <el-icon-menu></el-icon-menu>
       <span>dialog组件</span>
     </el-menu-item>
-    <el-menu-item index="/upload">
-      <el-icon-menu></el-icon-menu>
-      <span>upload组件</span>
-    </el-menu-item>
   </el-menu>
 </template>
 

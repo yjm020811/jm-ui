@@ -6,6 +6,7 @@ import router from "./router";
 
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
+import zhCn from "element-plus/dist/locale/zh-cn.mjs";
 
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 
@@ -24,6 +25,11 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 import globalComponent from "./components/index";
 //2.安装这个插件
 app.use(globalComponent);
+
+// 中文化
+app.use(ElementPlus, {
+  locale: zhCn
+});
 
 // svg插件配置项
 import "virtual:svg-icons-register";

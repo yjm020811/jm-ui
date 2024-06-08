@@ -9,7 +9,6 @@ import myProgress from "./myProgress/index.vue";
 import toDoList from "./toDoList/index.vue";
 import trend from "./trend/index.vue";
 import svgIcon from "./svgIcon/index.vue";
-import myUpload from "./myUpload/index.vue";
 
 // 全局组件对象
 const allGlobalComponents = {
@@ -22,8 +21,7 @@ const allGlobalComponents = {
   myProgress,
   toDoList,
   trend,
-  svgIcon,
-  myUpload
+  svgIcon
 };
 
 // 全局注册组件

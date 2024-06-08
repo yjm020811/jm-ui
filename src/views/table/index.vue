@@ -1,35 +1,59 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
+import dayjs from "dayjs";
 
 //el-table的data数据
 const tableData = ref([]);
+const current = ref(1);
+const pageSize = ref(10);
+const total = ref(16);
+
+const getData = () => {
+  // 获取数据
+  axios
+    .get("http://localhost:3000/my/activity/allActivity")
+    .then((res) => {
+      console.log(res.data.data);
+      tableData.value = res.data.data;
+    });
+};
 onMounted(() => {
-  axios.get("https://api.vvhan.com/api/wbhot").then((res) => {
-    console.log(res.data.data);
-    tableData.value = res.data.data;
-  });
+  getData();
 });
+
+let handleSizeChange = (val) => {
+  pageSize.value = val
+  getData()
+}
+let handleCurrentChange = (val) => {
+  current.value = val
+  getData()
+}
 
 //el-table-column配置
 const options = [
   {
-    label: "标题",
-    prop: "title",
+    label: "活动id",
+    prop: "id",
     align: "center",
     width: 300
   },
   {
-    label: "地址",
-    prop: "url",
-    align: "center",
-    // 是否开启插槽
-    slot: "url"
+    label: "活动描述",
+    prop: "activityDesc",
+    align: "center"
   },
   {
-    label: "热度",
-    prop: "hot",
+    label: "活动名称",
+    prop: "activityName",
     align: "center"
+  },
+  {
+    label: "活动开始时间",
+    prop: "activityStartTime",
+    align: "center",
+    slot: "activityStartTime" //开启插槽
   }
 ];
 
@@ -61,39 +85,23 @@ const svg = `
           L 15 15
         " style="stroke-width: 4px; fill: rgba(0, 0, 0, 0)"/>
       `;
-
-//分页的配置(到毕设上面去看详细的table分页)
-onMounted(() => {
-  const current = ref(1);
-  const pageSize = ref(5);
-});
 </script>
 
 <template>
-  <MyTable
-    :tableData="tableData"
-    :options="options"
-    elementLoadingText="加载中，请等待！"
-    :elementLoadingIcon="svg"
-    :actionOptions="actionOptions"
-  >
-    <template #url="{ scope }">
-      <a
-        :href="scope.row.url"
-        style="text-decoration: none; color: skyblue"
-        target="_blank"
-        >url:{{ scope.row.title }}</a
-      >
+  <MyTable :tableData="tableData" border :options="options" elementLoadingText="加载中，请等待！" :elementLoadingIcon="svg"
+    :actionOptions="actionOptions" pagination :total="total" :currentPage="current" paginationAlign="right"
+    @sizeChange="handleSizeChange" @currentChange="handleCurrentChange">
+    <template #activityStartTime="{ scope }">
+      <!-- 使用dayjs -->
+      <span>{{
+    dayjs(scope.row.activityStartTime).format("YYYY-MM-DD HH:mm:ss")
+  }}</span>
     </template>
 
     <!-- 自定义编辑区域 -->
     <template #action="{ scope }">
-      <el-button size="small" type="primary" @click="edit(scope)"
-        >编辑</el-button
-      >
-      <el-button size="small" type="danger" @click="deleteAction(scope)"
-        >删除</el-button
-      >
+      <el-button size="small" type="primary" @click="edit(scope)">编辑</el-button>
+      <el-button size="small" type="danger" @click="deleteAction(scope)">删除</el-button>
     </template>
   </MyTable>
 </template>
