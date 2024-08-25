@@ -1,5 +1,7 @@
 <script setup>
-import { computed } from "vue";
+import { ref, computed } from "vue";
+import { toLine } from "../../utils/index";
+
 const props = defineProps({
   //表格的配置
   tableData: {
@@ -19,6 +21,11 @@ const props = defineProps({
   elementLoadingIcon: {
     type: String
   },
+  // 可编辑单元格显示的图标
+  editIcon: {
+    type: String,
+    default: "edit"
+  },
   //编辑区域的配置
   actionOptions: {
     type: Object
@@ -31,7 +38,7 @@ const props = defineProps({
   // 显示分页的对齐方式
   paginationAlign: {
     type: String,
-    default: 'left'
+    default: "left"
   },
   // 当前是第几页
   currentPage: {
@@ -65,7 +72,7 @@ const isLoading = computed(() => {
   }
 });
 
-const emits = defineEmits(["sizeChange", "currentChange"]);
+const emits = defineEmits(["confirm", "cancel", "sizeChange", "currentChange"]);
 
 // 分页的页数改变
 const handleSizeChange = (val) => {
@@ -77,6 +84,32 @@ const handleSizeChange = (val) => {
 const handleCurrentChange = (val) => {
   console.log(`当前页: ${val}`);
   emits("currentChange", val);
+};
+
+// 当前点击的编辑单元格
+const currentEdit = ref("");
+
+// 点击编辑图标
+const clickEdit = (scope) => {
+  console.log(scope);
+  // 获取唯一的标识
+  currentEdit.value = scope.$index + scope.column.id;
+  console.log(currentEdit.value);
+};
+
+// 点击勾
+const confirm = (scope) => {
+  emits("confirm", scope)
+};
+
+// 点击叉
+const cancel = (scope) => {
+  emits("cancel", scope)
+}
+
+// 点击编辑单元格
+const clickEditCell = () => {
+  currentEdit.value = "";
 };
 
 // 计算属性计算出分页器的位置
@@ -98,8 +131,25 @@ const paginationLayout = computed(() => {
       <!-- 正常展示数据的区域 -->
       <el-table-column :label="item.label" :prop="item.prop" :align="item.align" :width="item.width">
         <template #default="scope">
-          <slot v-if="item.slot" :name="item.slot" :scope="scope"></slot>
-          <span v-else>{{ scope.row[item.prop] }}</span>
+          <template v-if="scope.$index + scope.column.id === currentEdit">
+            <div style="display: flex;">
+              <el-input size="small" v-model="scope.row[item.prop]"></el-input>
+              <div @click.stop="clickEditCell">
+                <slot name="editCell" v-if="$slots.editCell" :scope="scope"></slot>
+                <div class="icons" v-else>
+                  <el-icon-check class="check" @click="confirm(scope)"></el-icon-check>
+                  <el-icon-close class="close" @click="cancel(scope)"></el-icon-close>
+                </div>
+              </div>
+            </div>
+          </template>
+          <template v-else>
+            <slot v-if="item.slot" :name="item.slot" :scope="scope"></slot>
+            <span v-else>{{ scope.row[item.prop] }}</span>
+            <component @click.stop="clickEdit(scope)" :is="`el-icon-${toLine(editIcon)}`" class="edit"
+              v-if="item.editable">
+            </component>
+          </template>
         </template>
       </el-table-column>
     </template>
@@ -115,10 +165,13 @@ const paginationLayout = computed(() => {
 
   <!-- 分页 -->
   <div v-if="pagination && !isLoading" class="pagination" :style="{ justifyContent: paginationLayout }">
-    <el-pagination currentPage.sync="currentPage" :page-sizes="pageSizes" :page-size="pageSize"
+    <el-pagination :current-page="currentPage" :page-size="pageSize" :page-sizes="pageSizes"
       layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"></el-pagination>
+      @current-change="handleCurrentChange" @update:current-page="currentPage = $event"
+      @update:page-size="pageSize = $event">
+    </el-pagination>
   </div>
+
 </template>
 <style scoped>
 .edit {
@@ -130,8 +183,32 @@ const paginationLayout = computed(() => {
   cursor: pointer;
 }
 
+.icons {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+  top: 4px;
+
+  svg {
+    width: 1em;
+    height: 1em;
+    margin-left: 8px;
+    cursor: pointer;
+  }
+}
+
+.check {
+  color: red;
+}
+
+.close {
+  color: green;
+}
+
 .pagination {
   display: flex;
+  align-items: center;
   margin-top: 16px;
 }
 </style>
