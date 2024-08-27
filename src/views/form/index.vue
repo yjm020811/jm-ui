@@ -84,7 +84,7 @@ const formOptions:FormOptions[] = [
         prop: 'sex',
         placeholder: '请选择性别',
         rules: [
-            { required: true, message: '请选择性别', trigger: 'blur' }
+            { required: true, message: '请选择性别', trigger: 'change' }
         ],
         attrs: {
             style: {
@@ -110,7 +110,7 @@ const formOptions:FormOptions[] = [
         prop: 'hobby',
         value: [],
         rules: [
-            { required: true, message: '请选择爱好', trigger: 'blur' }
+            { required: true, message: '请选择爱好', trigger: 'change' }
         ],
         children: [
             {
@@ -136,7 +136,7 @@ const formOptions:FormOptions[] = [
         prop: 'book',
         value: "",
         rules: [
-            { required: true, message: '请选择书籍', trigger: 'blur' }
+            { required: true, message: '请选择书籍', trigger: 'change' }
         ],
         children: [
             {
