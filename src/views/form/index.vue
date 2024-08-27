@@ -1,5 +1,6 @@
 <template>
     <div>
+        <!-- 单纯表单 -->
         <MyForm :formOptions="formOptions" @on-preview="onPreview" @on-remove="onRemove" @on-success="onSuccess"
             @on-error="onError" @on-progress="onProgress" @on-change="onChange" @before-upload="beforeUpload"
             @before-remove="beforeRemove" @http-request="httpRequest" @on-exceed="handleExceed">
@@ -14,13 +15,41 @@
                 <el-button @click="reset(scope)">重置</el-button>
             </template>
         </MyForm>
+        <br />
+        <br />
+        <br />
+        <br />
+        <!-- 结合el-dialog -->
+        <el-button type="primary" @click="openDialog">打开dialog结合form</el-button>
+        <el-dialog v-model="dialogVisible" destroy-on-close>
+            <MyForm :formOptions="formOptions" @on-preview="onPreview" @on-remove="onRemove" @on-success="onSuccess"
+                @on-error="onError" @on-progress="onProgress" @on-change="onChange" @before-upload="beforeUpload"
+                @before-remove="beforeRemove" @http-request="httpRequest" @on-exceed="handleExceed">
+                <template #uploadArea>
+                    <el-button type="primary">Click to upload</el-button>
+                </template>
+                <template #uploadTip>
+                    jpg/png files with a size less than 500KB.
+                </template>
+                <template #action="scope">
+                    <el-button type="primary" @click="onSubmit(scope)">提交</el-button>
+                    <el-button @click="reset(scope)">重置</el-button>
+                </template>
+            </MyForm>
+        </el-dialog>
     </div>
 </template>
 <script lang='ts' setup>
-import { ElMessage } from 'element-plus';
 import { ref } from 'vue'
+import { ElMessage } from 'element-plus';
+import { FormInstance, FormOptions } from '../../components/myForm/types/types'
 
-const formOptions = [
+interface Scope {
+  form: FormInstance,
+  model: any
+}
+
+const formOptions:FormOptions[] = [
     {
         label: '姓名',
         prop: 'name',
@@ -132,18 +161,18 @@ const formOptions = [
         label: '上传',
         prop: 'upload',
         value: "",
-        // rules: [
-        //     { required: true, message: '请上传文件', trigger: 'blur' }
-        // ],
+        rules: [
+            { required: true, message: '请上传文件', trigger: 'blur' }
+        ],
         uploadAttrs: {
-            action: "https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15",
+            action: "https://d6hqs7.lafyun.com:443/upload",
             multiple: true,
             limit: 3,
         }
-    }
+    },
 ]
 
-const onSubmit = (scope: any) => {
+const onSubmit = (scope: Scope) => {
     scope.form.validate((valid: any) => {
         if (valid) {
             console.log(scope.model)
@@ -153,6 +182,13 @@ const onSubmit = (scope: any) => {
             return false;
         }
     });
+}
+
+// 打开dialog
+const dialogVisible = ref(false)
+
+const openDialog = () => {
+    dialogVisible.value = true
 }
 
 // 表单重置
@@ -194,7 +230,6 @@ const beforeUpload = (val: any) => {
     console.log("beforeUpload")
     console.log(val)
     //上传之前携带参数
-
 }
 
 const beforeRemove = (val: any) => {
@@ -210,8 +245,5 @@ const httpRequest = (config: any) => {
 const handleExceed = (val: any) => {
     ElMessage.warning(`当前限制选择 3 个文件，本次选择了 ${val.files.length} 个文件，`)
 }
-
-
-
 </script>
 <style lang='scss' scoped></style>

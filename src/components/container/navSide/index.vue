@@ -36,10 +36,6 @@
       <el-icon-menu></el-icon-menu>
       <span>表单组件</span>
     </el-menu-item>
-    <el-menu-item index="/dialog">
-      <el-icon-menu></el-icon-menu>
-      <span>dialog组件</span>
-    </el-menu-item>
   </el-menu>
 </template>
 

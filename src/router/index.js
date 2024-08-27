@@ -42,10 +42,6 @@ const routes = [
       {
         path: "/form",
         component: () => import("../views/form/index.vue")
-      },
-      {
-        path: "/dialog",
-        component: () => import("../views/dialog/index.vue")
       }
     ]
   }
