@@ -55,6 +55,8 @@ const formOptions:FormOptions[] = [
         prop: 'name',
         type: 'input',
         placeholder: '请输入姓名',
+         // 一共24格，占据3格
+        colSpan :3,
         rules: [
             { required: true, message: '请输入姓名', trigger: 'blur' },
             { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
@@ -72,6 +74,8 @@ const formOptions:FormOptions[] = [
             { required: true, message: '请输入密码', trigger: 'blur' },
             { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
         ],
+        // 一共24格，占据21格
+        colSpan :21,
         attrs: {
             showPassword: true,
             clearable: true
@@ -156,6 +160,21 @@ const formOptions:FormOptions[] = [
             }
         ]
     },
+    {
+        type:"date-picker",
+        label: '日期',
+        prop: 'date',
+        // 需要value显示今天
+        value: new Date(),
+        rules: [
+            { required: true, message: '请选择日期', trigger: 'change' }
+        ],
+        attrs: {
+            style: {
+                width: "300px"
+            }
+        }
+        },
     {
         type: "upload",
         label: '上传',

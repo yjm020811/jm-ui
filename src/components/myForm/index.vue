@@ -1,29 +1,33 @@
 <template>
     <el-form ref="form" v-if="model" :validate-on-rule-change="false" :rules="rules" :model="model" v-bind="$attrs">
-        <template v-for="(item, index) in props.formOptions" :key="index">
-            <el-form-item v-if="!item.children || !item.children.length" :prop="item.prop" :label="item.label">
-                <!-- 非上传 -->
-                <component v-if="item.type !== 'upload'" :placeholder="item.placeholder" v-bind="item.attrs"
-                    :is="`el-${item.type}`" v-model="model[item.prop!]"></component>
-                <!-- 上传 -->
-                <el-upload multiple v-if="item.type === 'upload'" v-bind="item.uploadAttrs" :on-preview="onPreview"
-                    :on-remove="onRemove" :on-success="onSuccess" :on-error="onError" :on-progress="onProgress"
-                    :on-change="onChange" :before-upload="beforeUpload" :before-remove="beforeRemove"
-                    :http-request="httpRequest" :on-exceed="onExceed">
-                    <slot name="uploadArea"></slot>
-                    <slot name="uploadTip"></slot>
-                </el-upload>
-            </el-form-item>
-            <!-- 子项处理 -->
-            <el-form-item v-if="item.children && item.children.length" :prop="item.prop" :label="item.label">
-                <component :placeholder="item.placeholder" v-bind="item.attrs" :is="`el-${item.type}`"
-                    v-model="model[item.prop!]">
-                    <component v-for="(child, i) in item.children" :key="i" :is="`el-${child.type}`"
-                        :label="child.label" :value="child.value">
-                    </component>
-                </component>
-            </el-form-item>
-        </template>
+        <el-row :gutter="20">
+            <template v-for="(item, index) in props.formOptions" :key="index">
+                <el-col :span="item.colSpan || 12">
+                    <el-form-item v-if="!item.children || !item.children.length" :prop="item.prop" :label="item.label">
+                        <!-- 非上传 -->
+                        <component v-if="item.type !== 'upload'" :placeholder="item.placeholder" v-bind="item.attrs"
+                            :is="`el-${item.type}`" v-model="model[item.prop!]"></component>
+                        <!-- 上传 -->
+                        <el-upload multiple v-if="item.type === 'upload'" v-bind="item.uploadAttrs"
+                            :on-preview="onPreview" :on-remove="onRemove" :on-success="onSuccess" :on-error="onError"
+                            :on-progress="onProgress" :on-change="onChange" :before-upload="beforeUpload"
+                            :before-remove="beforeRemove" :http-request="httpRequest" :on-exceed="onExceed">
+                            <slot name="uploadArea"></slot>
+                            <slot name="uploadTip"></slot>
+                        </el-upload>
+                    </el-form-item>
+                    <!-- 子项处理 -->
+                    <el-form-item v-if="item.children && item.children.length" :prop="item.prop" :label="item.label">
+                        <component :placeholder="item.placeholder" v-bind="item.attrs" :is="`el-${item.type}`"
+                            v-model="model[item.prop!]">
+                            <component v-for="(child, i) in item.children" :key="i" :is="`el-${child.type}`"
+                                :label="child.label" :value="child.value">
+                            </component>
+                        </component>
+                    </el-form-item>
+                </el-col>
+            </template>
+        </el-row>
         <!-- 操作项 -->
         <el-form-item>
             <slot name="action" :form="form" :model="model"></slot>
@@ -80,7 +84,7 @@ const onRemove = (file: any, fileList: any) => emits("on-remove", { file, fileLi
 const onSuccess = (response: any, file: any, fileList: any) => {
     let uploadItem = props.formOptions.find((item: any) => item.type === "upload")
     if (uploadItem) {
-        model.value[uploadItem.prop!] = { response, file, fileList }
+        (model.value as any)[uploadItem.prop!] = { response, file, fileList }
     }
     emits("on-success", { response, file, fileList })
 }
