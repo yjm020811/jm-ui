@@ -31,7 +31,8 @@ export interface FormOptions {
     | "time-picker"
     | "time-select"
     | "transfer"
-    | "upload";
+    | "upload"
+    | "slot"
   // 表单项的值
   value?: any;
   // 表单项label
@@ -73,6 +74,8 @@ export interface FormOptions {
     disabled?: boolean;
     limit?: number;
   };
+  // 自定义插槽
+  slotName?: string;
 }
 
 export interface ValidateFieldCallback {

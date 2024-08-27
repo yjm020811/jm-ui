@@ -4,8 +4,8 @@
             <template v-for="(item, index) in props.formOptions" :key="index">
                 <el-col :span="item.colSpan || 12">
                     <el-form-item v-if="!item.children || !item.children.length" :prop="item.prop" :label="item.label">
-                        <!-- 非上传 -->
-                        <component v-if="item.type !== 'upload'" :placeholder="item.placeholder" v-bind="item.attrs"
+                        <!-- 非上传且不是插槽内容 -->
+                        <component v-if="item.type !== 'upload' && item.type !== 'slot'" :placeholder="item.placeholder" v-bind="item.attrs"
                             :is="`el-${item.type}`" v-model="model[item.prop!]"></component>
                         <!-- 上传 -->
                         <el-upload multiple v-if="item.type === 'upload'" v-bind="item.uploadAttrs"
@@ -15,6 +15,8 @@
                             <slot name="uploadArea"></slot>
                             <slot name="uploadTip"></slot>
                         </el-upload>
+                        <!-- 自定义插槽 -->
+                        <slot v-if="item.type === 'slot'" :name="item.slotName" :model="model"></slot>
                     </el-form-item>
                     <!-- 子项处理 -->
                     <el-form-item v-if="item.children && item.children.length" :prop="item.prop" :label="item.label">

@@ -10,6 +10,9 @@
             <template #uploadTip>
                 jpg/png files with a size less than 500KB.
             </template>
+            <template #personSlot>
+                自定义插槽内容
+            </template>
             <template #action="scope">
                 <el-button type="primary" @click="onSubmit(scope)">提交</el-button>
                 <el-button @click="reset(scope)">重置</el-button>
@@ -31,6 +34,9 @@
                 <template #uploadTip>
                     jpg/png files with a size less than 500KB.
                 </template>
+                <template #personSlot>
+                    自定义插槽内容
+                </template>
                 <template #action="scope">
                     <el-button type="primary" @click="onSubmit(scope)">提交</el-button>
                     <el-button @click="reset(scope)">重置</el-button>
@@ -45,18 +51,18 @@ import { ElMessage } from 'element-plus';
 import { FormInstance, FormOptions } from '../../components/myForm/types/types'
 
 interface Scope {
-  form: FormInstance,
-  model: any
+    form: FormInstance,
+    model: any
 }
 
-const formOptions:FormOptions[] = [
+const formOptions: FormOptions[] = [
     {
         label: '姓名',
         prop: 'name',
         type: 'input',
         placeholder: '请输入姓名',
-         // 一共24格，占据3格
-        colSpan :3,
+        // 一共24格，占据3格
+        colSpan: 3,
         rules: [
             { required: true, message: '请输入姓名', trigger: 'blur' },
             { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
@@ -75,7 +81,7 @@ const formOptions:FormOptions[] = [
             { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
         ],
         // 一共24格，占据21格
-        colSpan :21,
+        colSpan: 21,
         attrs: {
             showPassword: true,
             clearable: true
@@ -161,7 +167,7 @@ const formOptions:FormOptions[] = [
         ]
     },
     {
-        type:"date-picker",
+        type: "date-picker",
         label: '日期',
         prop: 'date',
         // 需要value显示今天
@@ -174,7 +180,15 @@ const formOptions:FormOptions[] = [
                 width: "300px"
             }
         }
-        },
+    },
+    {
+        type: "slot",
+        label: '自定义插槽名称',
+        prop: 'slot',
+        value: "",
+        // 插槽名称
+        slotName: 'personSlot'
+    },
     {
         type: "upload",
         label: '上传',
