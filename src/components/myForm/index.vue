@@ -5,6 +5,7 @@
                 <el-col :span="item.colSpan || 12">
                     <el-form-item v-if="!item.children || !item.children.length" :prop="item.prop" :label="item.label">
                         <!-- 非上传且不是插槽内容 -->
+                         <!-- 注意：本项目采用的全局注册elementPlus组件，所以这里的动态组件能够正常渲染出来，当项目采用的局部注册就需要在main.js中单独处理并导入utils中的函数 -->
                         <component v-if="item.type !== 'upload' && item.type !== 'slot'" :placeholder="item.placeholder" v-bind="item.attrs"
                             :is="`el-${item.type}`" v-model="model[item.prop!]"></component>
                         <!-- 上传 -->
