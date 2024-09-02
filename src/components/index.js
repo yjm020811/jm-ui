@@ -2,7 +2,6 @@
 import chooseArea from "./chooseArea/index.vue";
 import chooseIcon from "./chooseIcon/index.vue";
 import menus from "./menus/index.vue";
-import MyDialog from "./MyDialog/index.vue";
 import MyTable from "./MyTable/index.vue";
 import notification from "./notification/index.vue";
 import myProgress from "./myProgress/index.vue";
@@ -16,7 +15,6 @@ const allGlobalComponents = {
   chooseArea,
   chooseIcon,
   menus,
-  MyDialog,
   MyTable,
   notification,
   myProgress,
