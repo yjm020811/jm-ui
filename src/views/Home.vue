@@ -5,8 +5,28 @@
   <svgIcon name="vue" width="100px" height="100px"></svgIcon>
   <svgIcon name="computer" color="red"></svgIcon>
   <svgIcon name="json" color="red"></svgIcon>
+  <div id="render"></div>
 </template>
-<script setup></script>
+<script setup>
+import { h, createApp, onMounted } from "vue";
+
+const MyComponent = () => {
+  return h("div", "我是render函数渲染的内容");
+};
+const app = createApp({
+  render() {
+    return h(MyComponent);
+  }
+});
+
+// 渲染到DOM
+onMounted(() => {
+  const container = document.getElementById("render");
+  console.log(container); // 应该打印 DOM 元素
+  app.mount(container);
+});
+</script>
+
 <style scoped>
 .elementPlusIcon {
   width: 2em;
