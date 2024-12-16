@@ -15,11 +15,13 @@ const props = defineProps({
   },
   //加载的文案
   elementLoadingText: {
-    type: String
+    type: String,
+    default: "加载中..."
   },
   //加载图标名
   elementLoadingIcon: {
-    type: String
+    type: String,
+    default: "Loading"
   },
   // 可编辑单元格显示的图标
   editIcon: {
@@ -33,7 +35,7 @@ const props = defineProps({
   // 是否显示分页
   pagination: {
     type: Boolean,
-    default: false
+    default: true
   },
   // 显示分页的对齐方式
   paginationAlign: {
@@ -59,6 +61,11 @@ const props = defineProps({
   total: {
     type: Number,
     default: 0
+  },
+  // 是否显示选择
+  showSelection: {
+    type: Boolean,
+    default: false
   }
 });
 console.log(props);
@@ -72,15 +79,27 @@ const isLoading = computed(() => {
   }
 });
 
-const emits = defineEmits(["confirm", "cancel", "sizeChange", "currentChange"]);
+const emits = defineEmits([
+  "confirm",
+  "cancel",
+  "sizeChange",
+  "currentChange",
+  "selectionChange"
+]);
 
-// 分页的页数改变
+/**
+ * 分页的页数改变
+ * @param val 分页的页数
+ */
 const handleSizeChange = (val) => {
   console.log(`每页 ${val} 条`);
   emits("sizeChange", val);
 };
 
-// 分页的页码改变
+/**
+ * 分页的页码改变
+ * @param val 分页的页码
+ */
 const handleCurrentChange = (val) => {
   console.log(`当前页: ${val}`);
   emits("currentChange", val);
@@ -99,13 +118,18 @@ const clickEdit = (scope) => {
 
 // 点击勾
 const confirm = (scope) => {
-  emits("confirm", scope)
+  emits("confirm", scope);
 };
 
 // 点击叉
 const cancel = (scope) => {
-  emits("cancel", scope)
-}
+  emits("cancel", scope);
+};
+
+// 选择表格数据
+const handleSelectionChange = (val) => {
+  emits("selectionChange", val);
+};
 
 // 点击编辑单元格
 const clickEditCell = () => {
@@ -125,20 +149,46 @@ const paginationLayout = computed(() => {
 </script>
 
 <template>
-  <el-table v-bind="$attrs" :data="tableData" style="width: 100%" v-loading="isLoading"
-    :element-loading-text="elementLoadingText" :element-loading-spinner="elementLoadingIcon">
+  <el-table
+    v-bind="$attrs"
+    :data="tableData"
+    style="width: 100%"
+    v-loading="isLoading"
+    :element-loading-text="elementLoadingText"
+    :element-loading-spinner="elementLoadingIcon"
+    @selection-change="handleSelectionChange"
+  >
+    <el-table-column type="selection" v-if="showSelection" width="55" />
     <template v-for="(item, index) in options" :key="index">
       <!-- 正常展示数据的区域 -->
-      <el-table-column :label="item.label" :prop="item.prop" :align="item.align" :width="item.width">
+      <el-table-column
+        :label="item.label"
+        :prop="item.prop"
+        :align="item.align"
+        :width="item.width"
+        :sortable="item.sortable"
+        :sort-method="item.sortMethod"
+        :show-overflow-tooltip="item.showOverflowTooltip"
+      >
         <template #default="scope">
           <template v-if="scope.$index + scope.column.id === currentEdit">
-            <div style="display: flex;">
+            <div style="display: flex">
               <el-input size="small" v-model="scope.row[item.prop]"></el-input>
               <div @click.stop="clickEditCell">
-                <slot name="editCell" v-if="$slots.editCell" :scope="scope"></slot>
+                <slot
+                  name="editCell"
+                  v-if="$slots.editCell"
+                  :scope="scope"
+                ></slot>
                 <div class="icons" v-else>
-                  <el-icon-check class="check" @click="confirm(scope)"></el-icon-check>
-                  <el-icon-close class="close" @click="cancel(scope)"></el-icon-close>
+                  <el-icon-check
+                    class="check"
+                    @click="confirm(scope)"
+                  ></el-icon-check>
+                  <el-icon-close
+                    class="close"
+                    @click="cancel(scope)"
+                  ></el-icon-close>
                 </div>
               </div>
             </div>
@@ -146,8 +196,12 @@ const paginationLayout = computed(() => {
           <template v-else>
             <slot v-if="item.slot" :name="item.slot" :scope="scope"></slot>
             <span v-else>{{ scope.row[item.prop] }}</span>
-            <component @click.stop="clickEdit(scope)" :is="`el-icon-${toLine(editIcon)}`" class="edit"
-              v-if="item.editable">
+            <component
+              @click.stop="clickEdit(scope)"
+              :is="`el-icon-${toLine(editIcon)}`"
+              class="edit"
+              v-if="item.editable"
+            >
             </component>
           </template>
         </template>
@@ -155,8 +209,12 @@ const paginationLayout = computed(() => {
     </template>
 
     <!-- 编辑区域 -->
-    <el-table-column v-if="actionOptions.show" :label="actionOptions.label" :align="actionOptions.align"
-      :width="actionOptions.width">
+    <el-table-column
+      v-if="actionOptions.show"
+      :label="actionOptions.label"
+      :align="actionOptions.align"
+      :width="actionOptions.width"
+    >
       <template #default="scope">
         <slot name="action" :scope="scope"></slot>
       </template>
@@ -164,14 +222,22 @@ const paginationLayout = computed(() => {
   </el-table>
 
   <!-- 分页 -->
-  <div v-if="pagination && !isLoading" class="pagination" :style="{ justifyContent: paginationLayout }">
-    <el-pagination :current-page="currentPage" :page-size="pageSize" :page-sizes="pageSizes"
-      layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange"
-      @current-change="handleCurrentChange" @update:current-page="currentPage = $event"
-      @update:page-size="pageSize = $event">
+  <div
+    v-if="pagination && !isLoading"
+    class="pagination"
+    :style="{ justifyContent: paginationLayout }"
+  >
+    <el-pagination
+      :current-page="currentPage"
+      :page-size="pageSize"
+      :page-sizes="pageSizes"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    >
     </el-pagination>
   </div>
-
 </template>
 <style scoped>
 .edit {

@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
-import axios from "axios";
+import { ref, computed } from "vue";
 import dayjs from "dayjs";
 import { FormInstance, FormOptions } from "../../components/myForm/types/types";
 import { ElMessage } from "element-plus";
+import { tableMock } from "./tableMock";
 
 interface Scope {
   form: FormInstance;
@@ -11,51 +11,37 @@ interface Scope {
 }
 
 //el-table的data数据
-const tableData = ref([]);
+const tableData = ref(tableMock.data);
+// 总数
+const total = ref(tableMock.total);
 // 在哪一页
 const currentPage = ref(1);
 // 每页多少条数据
-const pageSize = ref(10);
-// 总数
-const total = ref(null);
+const pageSize = ref(5);
+// 是否显示弹窗
+const dialogVisible = ref(false);
 
-const getData = (...args: any) => {
-  // 构造请求的URL和参数
-  const url = "http://localhost:3000/my/activity/allActivity";
-  const params = {
-    limit: pageSize.value,
-    page: currentPage.value
-  };
-
-  // 使用axios发送GET请求，通过params对象传递查询参数
-  axios
-    .get(url, { params })
-    .then((res) => {
-      console.log(res.data.data);
-      tableData.value = res.data.data;
-      total.value = res.data.total;
-    })
-    .catch((error) => {
-      // 处理错误情况
-      console.error("There was an error!", error);
-    });
-};
-onMounted(() => {
-  getData(pageSize.value, currentPage.value);
+// 当前页数据
+const paginatedData = computed(() => {
+  const startIndex = (currentPage.value - 1) * pageSize.value;
+  const endIndex = startIndex + pageSize.value;
+  return tableData.value.slice(startIndex, endIndex);
 });
 
-// 每页多少条数据
-let handleSizeChange = (val) => {
+// 每页条数改变处理
+let handleSizeChange = (val: number) => {
   console.log("当前一页多少条数据", val);
   pageSize.value = val;
-  getData();
+
+  // 根据新分页数调整页码，确保不会越界
+  const maxPage = Math.ceil(total.value / pageSize.value);
+  currentPage.value = Math.min(currentPage.value, maxPage);
 };
 
 // 在那一页
-let handleCurrentChange = (val) => {
+let handleCurrentChange = (val: any) => {
   console.log("当前在哪一页", val);
   currentPage.value = val;
-  getData();
 };
 
 //el-table-column配置
@@ -64,18 +50,28 @@ const options = [
     label: "活动id",
     prop: "id",
     align: "center",
-    width: 300
+    width: 80
   },
   {
     label: "活动描述",
     prop: "activityDesc",
-    align: "center"
+    align: "center",
+    showOverflowTooltip: true
   },
   {
     label: "活动名称",
     prop: "activityName",
     align: "center",
     editable: true
+  },
+  {
+    label: "活动报名费",
+    prop: "price",
+    align: "center",
+    sortable: true,
+    sortMethod: (a: any, b: any) => {
+      return a.price - b.price;
+    }
   },
   {
     label: "活动开始时间",
@@ -121,6 +117,11 @@ const deleteAction = (scope) => {
   console.log(`删除表格`, scope.row);
 };
 
+// 选择表格数据
+const handleSelectionChange = (selection) => {
+  console.log(`当前选中的所有行`, selection);
+};
+
 const formOptions: FormOptions[] = [
   {
     label: "活动id",
@@ -162,6 +163,14 @@ const formOptions: FormOptions[] = [
     }
   },
   {
+    label: "活动报名费",
+    prop: "price",
+    type: "input",
+    placeholder: "请输入活动报名费",
+    value: "",
+    rules: [{ required: true, message: "请输入活动报名费", trigger: "blur" }]
+  },
+  {
     type: "date-picker",
     label: "日期",
     prop: "activityStartTime",
@@ -170,12 +179,12 @@ const formOptions: FormOptions[] = [
     rules: [{ required: true, message: "请选择日期", trigger: "change" }],
     attrs: {
       style: {
-        width: "300px"
+        width: "340px"
       }
     }
   }
 ];
-const dialogVisible = ref(false);
+
 const onSubmit = (scope: Scope) => {
   scope.form.validate((valid: any) => {
     if (valid) {
@@ -196,9 +205,22 @@ const reset = (scope: any) => {
 </script>
 
 <template>
-  <MyTable :tableData="tableData" border :options="options" elementLoadingText="加载中，请等待！" :actionOptions="actionOptions"
-    pagination :total="total" :currentPage="currentPage" :pageSize="pageSize" paginationAlign="right"
-    @sizeChange="handleSizeChange" @currentChange="handleCurrentChange" @confirm="confirm" @cancel="cancel">
+  <MyTable
+    :tableData="paginatedData"
+    :options="options"
+    elementLoadingText="加载中，请等待！"
+    :actionOptions="actionOptions"
+    :total="total"
+    :currentPage="currentPage"
+    :pageSize="pageSize"
+    paginationAlign="right"
+    @sizeChange="handleSizeChange"
+    @currentChange="handleCurrentChange"
+    @confirm="confirm"
+    @cancel="cancel"
+    :showSelection="true"
+    @selectionChange="handleSelectionChange"
+  >
     <template #activityStartTime="{ scope }">
       <!-- 使用dayjs -->
       <span>{{
@@ -208,8 +230,12 @@ const reset = (scope: any) => {
 
     <!-- 自定义编辑区域 -->
     <template #action="{ scope }">
-      <el-button size="small" type="primary" @click="edit(scope)">编辑</el-button>
-      <el-button size="small" type="danger" @click="deleteAction(scope)">删除</el-button>
+      <el-button size="small" type="primary" @click="edit(scope)"
+        >编辑</el-button
+      >
+      <el-button size="small" type="danger" @click="deleteAction(scope)"
+        >删除</el-button
+      >
     </template>
   </MyTable>
   <el-dialog destroy-on-close v-model="dialogVisible" title="编辑活动信息">
