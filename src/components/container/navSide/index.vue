@@ -1,5 +1,10 @@
 <template>
-  <el-menu :collapse="isCollapse" class="el-menu-vertical-demo" :router="true">
+  <el-menu
+    :collapse="isCollapse"
+    :default-active="route.path"
+    class="el-menu-vertical-demo"
+    :router="true"
+  >
     <el-menu-item index="/">
       <el-icon-menu></el-icon-menu>
       <span>svg组件</span>
@@ -40,6 +45,8 @@
 </template>
 
 <script setup>
+import { useRoute } from "vue-router";
+const route = useRoute();
 const props = defineProps({
   isCollapse: {
     type: Boolean,
