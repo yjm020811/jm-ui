@@ -66,6 +66,11 @@ const props = defineProps({
   showSelection: {
     type: Boolean,
     default: false
+  },
+  // 是否显示index
+  showIndex: {
+    type: Boolean,
+    default: false
   }
 });
 console.log(props);
@@ -158,18 +163,20 @@ const paginationLayout = computed(() => {
     :element-loading-spinner="elementLoadingIcon"
     @selection-change="handleSelectionChange"
   >
+    <!-- 选择  -->
     <el-table-column type="selection" v-if="showSelection" width="55" />
+    <!-- 序号 -->
+    <el-table-column
+      type="index"
+      align="center"
+      label="序号"
+      v-if="showIndex"
+      width="55"
+    />
+    <!-- 循环遍历options -->
     <template v-for="(item, index) in options" :key="index">
       <!-- 正常展示数据的区域 -->
-      <el-table-column
-        :label="item.label"
-        :prop="item.prop"
-        :align="item.align"
-        :width="item.width"
-        :sortable="item.sortable"
-        :sort-method="item.sortMethod"
-        :show-overflow-tooltip="item.showOverflowTooltip"
-      >
+      <el-table-column v-bind="item" align="center">
         <template #default="scope">
           <template v-if="scope.$index + scope.column.id === currentEdit">
             <div style="display: flex">

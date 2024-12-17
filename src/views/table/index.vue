@@ -49,25 +49,21 @@ const options = [
   {
     label: "活动id",
     prop: "id",
-    align: "center",
     width: 80
   },
   {
     label: "活动描述",
     prop: "activityDesc",
-    align: "center",
     showOverflowTooltip: true
   },
   {
     label: "活动名称",
     prop: "activityName",
-    align: "center",
     editable: true
   },
   {
     label: "活动报名费",
     prop: "price",
-    align: "center",
     sortable: true,
     sortMethod: (a: any, b: any) => {
       return a.price - b.price;
@@ -76,7 +72,6 @@ const options = [
   {
     label: "活动开始时间",
     prop: "activityStartTime",
-    align: "center",
     slot: "activityStartTime" //开启插槽
   }
 ];
@@ -218,8 +213,9 @@ const reset = (scope: any) => {
     @currentChange="handleCurrentChange"
     @confirm="confirm"
     @cancel="cancel"
-    :showSelection="true"
     @selectionChange="handleSelectionChange"
+    :showSelection="true"
+    :showIndex="true"
   >
     <template #activityStartTime="{ scope }">
       <!-- 使用dayjs -->
