@@ -32,7 +32,7 @@ export interface FormOptions {
     | "time-select"
     | "transfer"
     | "upload"
-    | "slot"
+    | "slot";
   // 表单项的值
   value?: any;
   // 表单项label
@@ -73,6 +73,7 @@ export interface FormOptions {
     autoUpload?: boolean;
     disabled?: boolean;
     limit?: number;
+    maxSize?: number;
   };
   // 自定义插槽
   slotName?: string;

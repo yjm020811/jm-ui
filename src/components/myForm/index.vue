@@ -84,6 +84,7 @@
 <script lang="ts" setup>
 import { ref, onMounted, watch, PropType } from "vue";
 import { FormInstance, FormOptions } from "./types/types";
+import { ElMessage } from "element-plus";
 const props = defineProps({
   // 表单的配置选项
   formOptions: {
@@ -105,9 +106,9 @@ const initForm = () => {
   if (props.formOptions && props.formOptions.length) {
     let m = {};
     let r = {};
-    props.formOptions.map((item: FormOptions) => {
-      m[item.prop!] = item.value;
-      r[item.prop!] = item.rules;
+    props.formOptions.forEach((item: FormOptions) => {
+      m[item.prop!] = item.value ?? ""; // 默认值为空字符串
+      r[item.prop!] = item.rules ?? []; // 默认值为空数组
     });
     model.value = JSON.parse(JSON.stringify(m));
     rules.value = JSON.parse(JSON.stringify(r));
@@ -158,7 +159,27 @@ const onProgress = (event: any, file: any, fileList: any) =>
   emits("on-progress", { event, file, fileList });
 const onChange = (file: any, fileList: any) =>
   emits("on-change", { file, fileList });
-const beforeUpload = (file: any) => emits("before-upload", file);
+const beforeUpload = (file: any) => {
+  // 找到对应的 upload 配置项
+  const uploadItem = props.formOptions.find((item) => item.type === "upload");
+  if (uploadItem) {
+    // 文件类型校验
+    const acceptTypes = uploadItem.uploadAttrs?.accept;
+    if (acceptTypes && !acceptTypes.includes(file.type)) {
+      ElMessage.error(`请上传 ${acceptTypes} 类型的文件`);
+      return false;
+    }
+    // 文件大小校验（可选）
+    const maxSize = uploadItem.uploadAttrs?.maxSize;
+    if (maxSize && file.size > maxSize * 1024 * 1024) {
+      ElMessage.error(`文件大小不能超过 ${maxSize}MB`);
+      return false;
+    }
+    emits("before-upload", file);
+    return true;
+  }
+  return false;
+};
 const beforeRemove = (file: any, fileList: any) =>
   emits("before-remove", { file, fileList });
 const onExceed = (files: any, fileList: any) =>
