@@ -141,9 +141,13 @@ const emits = defineEmits([
 ]);
 
 // 上传组件事件处理方法
+
+// 点击文件列表中已上传的文件时的钩子
 const onPreview = (file: any) => emits("on-preview", file);
+// 文件列表移除文件时的钩子
 const onRemove = (file: any, fileList: any) =>
   emits("on-remove", { file, fileList });
+// 文件上传成功时的钩子
 const onSuccess = (response: any, file: any, fileList: any) => {
   let uploadItem = props.formOptions.find(
     (item: any) => item.type === "upload"
@@ -153,12 +157,16 @@ const onSuccess = (response: any, file: any, fileList: any) => {
   }
   emits("on-success", { response, file, fileList });
 };
+// 文件上传失败时的钩子
 const onError = (err: any, file: any, fileList: any) =>
   emits("on-error", { err, file, fileList });
+// 文件上传时的钩子
 const onProgress = (event: any, file: any, fileList: any) =>
   emits("on-progress", { event, file, fileList });
+// 文件状态改变时的钩子，添加文件、上传成功和上传失败时都会被调用
 const onChange = (file: any, fileList: any) =>
   emits("on-change", { file, fileList });
+// 上传文件之前的钩子
 const beforeUpload = (file: any) => {
   // 找到对应的 upload 配置项
   const uploadItem = props.formOptions.find((item) => item.type === "upload");
@@ -180,8 +188,10 @@ const beforeUpload = (file: any) => {
   }
   return false;
 };
+// 删除文件之前的钩子
 const beforeRemove = (file: any, fileList: any) =>
   emits("before-remove", { file, fileList });
+// 当超出限制时，执行的钩子函数
 const onExceed = (files: any, fileList: any) =>
   emits("on-exceed", { files, fileList });
 </script>
