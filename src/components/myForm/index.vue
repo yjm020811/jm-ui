@@ -5,6 +5,8 @@
     :validate-on-rule-change="false"
     :rules="rules"
     :model="model"
+    label-position="right"
+    label-width="auto"
     v-bind="$attrs"
   >
     <el-row :gutter="20">

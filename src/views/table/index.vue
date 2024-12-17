@@ -70,6 +70,11 @@ const options = [
     }
   },
   {
+    label: "活动图片",
+    prop: "img",
+    slot: "img" //开启插槽
+  },
+  {
     label: "活动开始时间",
     prop: "activityStartTime",
     slot: "activityStartTime" //开启插槽
@@ -222,6 +227,36 @@ const reset = (scope: any) => {
       <span>{{
         dayjs(scope.row.activityStartTime).format("YYYY-MM-DD HH:mm:ss")
       }}</span>
+    </template>
+
+    <!-- 自定义插槽实现图片预览 -->
+    <template #img="{ scope }">
+      <el-image
+        style="width: 60px; height: 60px"
+        :src="scope.row.img"
+        :zoom-rate="1.2"
+        :max-scale="7"
+        :min-scale="2"
+        :preview-src-list="[scope.row.img]"
+        :initial-index="4"
+        :preview-teleported="true"
+        fit="cover"
+      >
+        <!-- 加载中显示的内容 -->
+        <template #placeholder>
+          <div class="image-placeholder">
+            <img
+              style="width: 50px; height: 50px"
+              src="../../assets/icons/loading.gif"
+              alt=""
+            />
+          </div>
+        </template>
+        <!-- 加载失败显示的内容 -->
+        <template #error>
+          <div style="font-size: 12px; line-height: 50px">加载出错...</div>
+        </template>
+      </el-image>
     </template>
 
     <!-- 自定义编辑区域 -->
