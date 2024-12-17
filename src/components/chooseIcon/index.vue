@@ -7,7 +7,12 @@
   <div class="choose-icon-dialog-height">
     <el-dialog :title="title" v-model="dialogVisible" @close="dialogClose">
       <div class="container">
-        <div class="item" v-for="item in Object.keys(ElementPlusIconsVue)" :key="item" @click="clickItem(item)">
+        <div
+          class="item"
+          v-for="item in Object.keys(ElementPlusIconsVue)"
+          :key="item"
+          @click="clickItem(item)"
+        >
           <!-- 使用动态组件循环图标组件 -->
           <component :is="`el-icon${toLine(item)}`"></component>
           <div class="text">{{ item }}</div>
@@ -20,7 +25,7 @@
 <script setup>
 import { ref, watch } from "vue";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
-import { toLine } from "../../utils/index.js";
+import { toLine } from "../../utils/index.ts";
 import { useCopy } from "../../hooks/useCopy";
 
 const props = defineProps({
